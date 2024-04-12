@@ -1,0 +1,5 @@
+{"personne":{
+"id":"<%=person["id"]%>",
+"name":"<%=person["name"]%>",
+"pic":"/uploads/<%=person["pic"]%>"
+}}

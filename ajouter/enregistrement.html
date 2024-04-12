@@ -1,0 +1,21 @@
+<h1>ajouter un enregistrement pour <%=params["event"]["organization"]%> <%=params["event"]["subtitle"]%></h1>
+<form action="/nouvelenregistrement" method="post">
+<input type="hidden" name="event_id" value="<%=params["myid"]%>" />
+<div class="champ">
+<label for="language1">langue</label>
+<select name="language" id="language1">
+<option value="fr">français</option>
+<option value="en">anglais</option>
+<option value="es">espagnol</option>
+<option value="it">italien</option>
+<option value="cn">chinois</option>
+</select>
+</div>
+<div class="champ">
+<label for="recording1">enregistrement</label>
+<input type="file" name="recording" />
+</div>
+<div class="champ">
+<input type="submit" name="submit" value="enregistrer texte " />
+</div>
+</form>

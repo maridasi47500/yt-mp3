@@ -1,0 +1,6 @@
+ <%tempssec=speaker["time_debut"]%>
+                 <%heure=str(speaker["heure"]).split(":")%>
+		                 <%heure_h=int(heure[0])%>
+				                 <%heure_min=int(heure[1])%>
+
+						                 <%=str(datetime.timedelta(seconds=(heure_h*60*60+heure_min*60+int(tempssec))))%></td><td><%=str(datetime.timedelta(seconds=int(tempssec)))%></td></tr>
