@@ -37,8 +37,8 @@ class RenderFigure():
         try:
           mystr=""
           loc={"db":Mydb(),"session": self.session,"render_collection": self.render_collection,"params":self.params,"getparams": self.getparams,"Fichier":Fichier,"date":date,"datetime":datetime}
-          for n in self.params:
-              loc[n]=self.params[n]
+          #for n in self.params:
+          #    loc[n]=self.params[n]
           for j in self.body.split("<%"):
 
             if j[0] == "=":
@@ -63,33 +63,16 @@ class RenderFigure():
               k=j.split("%>")
               print("my session",self.session)
               loc={"db":Mydb(),"session": self.session,"render_collection": self.render_collection,"params":self.params,"getparams": self.getparams,"Fichier":Fichier,"date":date}
-              for n in self.params:
-                  loc[n]=self.params[n]
               print(k[0])
-              l=exec("myvalue="+k[0], globals(), loc)
-              mystr+=str(loc["myvalue"]) if loc["myvalue"] is not None else ""
+              l=exec(k[0], globals(), loc)
               if k[1]:
                 mystr+=k[1]
-          #if self.mytemplate is not None:
-          #    self.body= open(os.path.abspath(self.mytemplate),"r").read().format(debutmots=self.title, mot=self.headingone,plusdemot=self.body)
-          #self.body=self.render_body()
-          #try:
-          #  return self.body.encode("utf-8")
-          #except:
-          #  return self.body
+          print("render body bon")
+          print(mystr)
           return mystr
         except Exception:
+          print("render body mauvais")
           l="<div style='background:red;color:white;'>erreurici pour afficher <div class=\"codeerreur\" style=\"background:black;color:white;\">"+k[0]+"</div>"+traceback.format_exc()+"<br>"+str(e)+"</div>".replace("\r\n",'<br>')
-          #mystr=str(loc["myvalue"]) if loc["myvalue"] is not None else ""
-          mystr=l
-          #self.body=mystr
-          #if self.mytemplate is not None:
-          #    self.body= open(os.path.abspath(self.mytemplate),"r").read().format(debutmots=self.title, mot=self.headingone,plusdemot=self.body)
-          #self.body=self.render_body()
-          #try:
-          #  return self.body.encode("utf-8")
-          #except:
-          #  return self.body
 
           return mystr
     def render_collection(self, collection,partial,as_,mylocals={}):
@@ -143,8 +126,10 @@ class RenderFigure():
                             mystr+=k[1]
                 i+=1
                 paspremier=True
+            print("render collection bon")
             return mystr
         except Exception as e:
+            print("render collection mauvais")
             raise ValueError("<meta charset=\"utf-8\"><div>Un certain truc sest mal passé avec<div style=\"background:black;color:#eb00eb;\" class=\"someerror\"> "+k[0]+"</div>---><div style=\"background:black;color:#eb00eb;\" class=\"someerror\">"+str(e)+"-- ligne "+str(ligne)+"</div></div>")
     def partie_de_mes_mots(self,balise="",text=""):
         r="<{balise}>{text}</{balise}>"
@@ -221,11 +206,16 @@ class RenderFigure():
         except:
           return self.body
     def render_figure(self,filename):
-        self.body+=open(os.path.abspath(self.path+"/"+filename),"r").read()
-        if self.mytemplate is not None:
-            self.body= open(os.path.abspath(self.mytemplate),"r").read().format(debutmots=self.title, mot=self.headingone,plusdemot=self.body)
-        self.body=self.render_body()
         try:
-          return self.body.encode("utf-8")
+          self.body+=open(os.path.abspath(self.path+"/"+filename),"r").read()
+          if self.mytemplate is not None:
+              self.body= open(os.path.abspath(self.mytemplate),"r").read().format(debutmots=self.title, mot=self.headingone,plusdemot=self.body)
+          self.body=self.render_body()
+          print("render figure bon")
+          try:
+            return self.body.encode("utf-8")
+          except:
+            return self.body
         except:
-          return self.body
+          print("render figure mauvaos")
+          return "erreur dans render figure"

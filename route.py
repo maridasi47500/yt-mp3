@@ -215,22 +215,12 @@ class Route():
         print("route params")
         self.render_figure.set_param("user",User().getbyid(myparam["id"]))
         return self.render_figure.render_figure("user/edituser.html")
-    def voirlieu(self,params={}):
+    def voirpiece(self,params={}):
         getparams=("id",)
-
         print("get param, action see my new",getparams)
         myparam=self.get_this_route_param(getparams,params)
-
-        try:
-          lieu1=""
-          self.render_figure.set_param("lieu","")
-          if not lieu1:
-            self.Program.set_code422(True);
-            return self.render_some_json("ajouter/lieu1.json")
-          return self.render_some_json("ajouter/lieu.json")
-        except:
-          self.Program.set_code422(True);
-          return self.render_some_json("ajouter/lieu1.json")
+        self.render_figure.set_param("piece",self.dbPiece.getbyid(myparam["id"]))
+        return self.render_figure.render_figure("ajouter/ingredientpiece.html")
     def voirpersonne(self,params={}):
         getparams=("id",)
         print("get param, action see my new",getparams)
@@ -410,7 +400,9 @@ class Route():
             '^/createpiece$': self.createpiece,
             '^/createstylo$': self.createpen,
             '^/createnotebook$': self.createnotebook,
+            '^/ajouteringredientpiece/([0-9]+)$': self.voirpiece,
             '^/ajouteringredient$': self.addingredient,
+
             '^/ajouterpractice$': self.addpractice,
             '^/ajouterpiece$': self.addpiece,
             '^/ajouterstylo$': self.addpen,
@@ -438,14 +430,18 @@ class Route():
                mycase=ROUTES[route]
                x=(re.match(route,path))
                print(True if x else False)
+               
                if x:
                    params["routeparams"]=x.groups()
                    try:
                        html=mycase(params)
+                       print("html bon")
+                       print(html)
                    except Exception as e:  
                        print("erreur"+str(e),traceback.format_exc())
                        html=("<p>une erreur s'est produite dans le code server  "+(traceback.format_exc())+"</p><a href=\"/\">retour à l'accueil</a>").encode("utf-8")
-                       print(html)
+                       print("html mauvais")
+                   
                    self.Program.set_html(html=html)
                    self.Program.clear_notice()
                    return self.Program

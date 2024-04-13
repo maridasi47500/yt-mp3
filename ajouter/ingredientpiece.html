@@ -1,0 +1,16 @@
+<%piece=params["piece"]%>
+<h1>ajouter ingredient pour <%=piece["name"]%></h2>
+<form action="/createingredient" method="post">
+<input id="penuser" type="hidden" name="user_id" value="<%=session["user_id"]%>"/>
+<div class="field">
+<label for="peningredient"></label>
+        <textarea id="peningredient" name="ingredient">
+        </textarea>
+</div>
+<div class="actions">
+<input id="penid" type="hidden" name="piece_id" value="<%=piece["id"]%>"/>
+<input id="ajouterpen" type="submit" name="addpen"/>
+</div>
+
+</form>
+

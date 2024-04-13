@@ -228,7 +228,10 @@ class S(BaseHTTPRequestHandler):
                     cookie.value = sess[cookie.name]
 
         self._set_response(redirect=myProgram.get_redirect(),cookies=req.cookies,pic=myProgram.get_pic(),js=myProgram.get_js(),css=myProgram.get_css(),json=myProgram.get_json(),code422=myProgram.get_code422(),music=myProgram.get_music())
-        self.wfile.write(myProgram.get_html())
+        try:
+           self.wfile.write(myProgram.get_html())
+        except:
+           self.wfile.write("erreur dans le html")
     def do_POST(self):
         content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
         #post_data = self.rfile.read(content_length) # <--- Gets the data itself
