@@ -1,6 +1,7 @@
 import re
 from fichier import Fichier
 import os
+from mydb import Mydb
 import traceback
 import sys
 import datetime
@@ -35,7 +36,7 @@ class RenderFigure():
     def render_body(self):
         try:
           mystr=""
-          loc={"session": self.session,"render_collection": self.render_collection,"params":self.params,"getparams": self.getparams,"Fichier":Fichier,"date":date,"datetime":datetime}
+          loc={"db":Mydb(),"session": self.session,"render_collection": self.render_collection,"params":self.params,"getparams": self.getparams,"Fichier":Fichier,"date":date,"datetime":datetime}
           for n in self.params:
               loc[n]=self.params[n]
           for j in self.body.split("<%"):
@@ -61,7 +62,7 @@ class RenderFigure():
                   continue
               k=j.split("%>")
               print("my session",self.session)
-              loc={"session": self.session,"render_collection": self.render_collection,"params":self.params,"getparams": self.getparams,"Fichier":Fichier,"date":date}
+              loc={"db":Mydb(),"session": self.session,"render_collection": self.render_collection,"params":self.params,"getparams": self.getparams,"Fichier":Fichier,"date":date}
               for n in self.params:
                   loc[n]=self.params[n]
               print(k[0])
@@ -99,7 +100,7 @@ class RenderFigure():
             i=0
             paspremier=False
             ligne=0
-            loc={"paspremier":False,as_: "","index":"",  "params": self.params,"render_collection":self.render_collection,"date":date,"datetime":datetime}
+            loc={"db":Mydb(),"paspremier":False,as_: "","index":"",  "params": self.params,"render_collection":self.render_collection,"date":date,"datetime":datetime}
             for y in mylocals:
                 loc[y]=mylocals[y]
 

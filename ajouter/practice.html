@@ -1,0 +1,29 @@
+<h1>ajouter entrainement</h2>
+<form action="/createpractice" method="post">
+<input id="penuser" type="hidden" name="user_id" value="<%=session["user_id"]%>"/>
+<div class="field">
+<label for="pendebut">debut</label>
+<input id="pendebut" type="time" name="debut"/>
+</div>
+<div class="field">
+<label for="penfin">fin</label>
+<input id="penfin" type="time" name="fin"/>
+</div>
+<div class="field">
+<label for="jour">jour</label>
+<select name="jour">
+<option value="1">lundi</option>
+<option value="2">mardi</option>
+<option value="3">mercredi</option>
+<option value="4">jeudi</option>
+<option value="5">vendredi</option>
+<option value="6">samedi</option>
+<option value="7">dimanche</option>
+</select>
+</div>
+<div class="actions">
+<input id="ajouterpen" type="submit" name="addpen"/>
+</div>
+
+</form>
+~         

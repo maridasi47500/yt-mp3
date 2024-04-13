@@ -1,0 +1,20 @@
+<h1>ajouter ingredient</h2>
+<form action="/createingredient" method="post">
+<input id="penuser" type="hidden" name="user_id" value="<%=session["user_id"]%>"/>
+<div class="field">
+<label for="peningredient"></label>
+	<textarea id="peningredient" name="ingredient">
+	</textarea>
+</div>
+<div class="field">
+<label for="penpiece"></label>
+	<select id="penpiece" name="piece_id">
+<%=render_collection(collection=params['pieces'], partial='welcome/_piece.html', as_='piece')%>
+	</select>
+</div>
+<div class="actions">
+<input id="ajouterpen" type="submit" name="addpen"/>
+</div>
+
+</form>
+

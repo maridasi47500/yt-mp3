@@ -2,6 +2,11 @@ from directory import Directory
 from render_figure import RenderFigure
 from myscript import Myscript
 from user import User
+from pen import Pen
+from notebook import Notebook
+from piece import Piece
+from practice import Practice
+from ingredient import Ingredient
 
 
 from mypic import Pic
@@ -18,6 +23,11 @@ class Route():
         self.Program.set_path("./")
         self.mysession={"notice":None,"email":None,"name":None}
         self.dbScript=Myscript()
+        self.dbPen=Pen()
+        self.dbPiece=Piece()
+        self.dbPractice=Practice()
+        self.dbIngredient=Ingredient()
+        self.dbNotebook=Notebook()
         self.render_figure=RenderFigure(self.Program)
         self.getparams=("id",)
     def set_post_data(self,x):
@@ -88,6 +98,26 @@ class Route():
         return self.render_some_json("welcome/monscript.json")
 
 
+    def createpiece(self,search):
+        myparam=self.get_post_data()(params=("name",))
+        hi=self.dbPiece.create(myparam)
+        return self.render_some_json("welcome/mypic.json")
+    def createpractice(self,search):
+        myparam=self.get_post_data()(params=("user_id","debut","fin","jour",))
+        hi=self.dbPractice.create(myparam)
+        return self.render_some_json("welcome/mypic.json")
+    def createingredient(self,search):
+        myparam=self.get_post_data()(params=("piece_id","user_id","ingredient",))
+        hi=self.dbIngredient.create(myparam)
+        return self.render_some_json("welcome/mypic.json")
+    def createnotebook(self,search):
+        myparam=self.get_post_data()(params=("name",))
+        hi=self.dbNotebook.create(myparam)
+        return self.render_some_json("welcome/mypic.json")
+    def createpen(self,search):
+        myparam=self.get_post_data()(params=("name",))
+        hi=self.dbPen.create(myparam)
+        return self.render_some_json("welcome/mypic.json")
     def new1(self,search):
         myparam=self.get_post_data()(params=("script","missiontarget_id","missiontype_id","missionprogram_id",))
         #hi=self.dbMissionscript.create(myparam)
@@ -166,7 +196,10 @@ class Route():
     def hello(self,search):
         print("hello action")
         print("hello action")
-        self.render_figure.set_param("events",[])
+        self.render_figure.set_param("piece",self.dbPiece.getall())
+        self.render_figure.set_param("practice",self.dbPractice.getall())
+        self.render_figure.set_param("pen",self.dbPen.getall())
+        self.render_figure.set_param("notebook",self.dbNotebook.getall())
         print("hello action")
         return self.render_figure.render_figure("welcome/index.html")
     def delete_user(self,params={}):
@@ -241,6 +274,20 @@ class Route():
             self.set_json("{\"redirect\":\"/youbank\"}")
             print("session login",self.Program.get_session())
         return self.render_figure.render_json()
+    def addingredient(self,search): 
+        self.render_figure.set_param("pieces",self.dbPiece.getall())
+        return self.render_figure.render_figure("ajouter/ingredient.html")
+    def addpractice(self,search): 
+        return self.render_figure.render_figure("ajouter/practice.html")
+    def addpiece(self,search):
+
+        return self.render_figure.render_figure("ajouter/piece.html")
+    def addnotebook(self,search):
+
+        return self.render_figure.render_figure("ajouter/notebook.html")
+    def addpen(self,search):
+
+        return self.render_figure.render_figure("ajouter/pen.html")
     def ajouterevent(self,search):
 
         return self.render_figure.render_figure("ajouter/event.html")
@@ -287,11 +334,17 @@ class Route():
     def jouerjeux(self,search):
         return self.render_figure.render_figure("welcome/jeu.html")
 
+    def signup(self,search):
+        return self.render_figure.render_figure("user/signup.html")
     def signin(self,search):
         return self.render_figure.render_figure("user/signin.html")
+    def addpen(self,search):
+        return self.render_figure.render_figure("ajouter/pen.html")
+    def addnotebook(self,search):
+        return self.render_figure.render_figure("ajouter/notebook.html")
 
     def save_user(self,params={}):
-        myparam=self.get_post_data()(params=("email","password","passwordconfirmation","nomcomplet","image"))
+        myparam=self.get_post_data()(params=("email","password","passwordconfirmation"))
         self.user=self.dbUsers.create(myparam)
         if self.user["user_id"]:
             self.set_session(self.user)
@@ -352,11 +405,23 @@ class Route():
             path=path.split("?")[0]
             print("link route ",path)
             ROUTES={
+            '^/createingredient$': self.createingredient,
+            '^/createpractice$': self.createpractice,
+            '^/createpiece$': self.createpiece,
+            '^/createstylo$': self.createpen,
+            '^/createnotebook$': self.createnotebook,
+            '^/ajouteringredient$': self.addingredient,
+            '^/ajouterpractice$': self.addpractice,
+            '^/ajouterpiece$': self.addpiece,
+            '^/ajouterstylo$': self.addpen,
+            '^/ajouternotebook$': self.addnotebook,
             '^/aboutme$': self.aboutme,
             '^/welcome$': self.welcome,
-            '^/signin$': self.signin,
+            '^/sign_in$': self.signin,
+            '^/sign_up$': self.signup,
             '^/logmeout$':self.logout,
             '^/signup$':self.save_user,
+            '^/save_user$':self.save_user,
             '^/update_user$':self.update_user,
             "^/seeuser/([0-9]+)$":self.seeuser,
             "^/edituser/([0-9]+)$":self.edit_user,
@@ -383,7 +448,6 @@ class Route():
                        print(html)
                    self.Program.set_html(html=html)
                    self.Program.clear_notice()
-                   self.Program.redirect_if_not_logged_in()
                    return self.Program
                else:
                    self.Program.set_html(html="<p>la page n'a pas été trouvée</p><a href=\"/\">retour à l'accueil</a>")

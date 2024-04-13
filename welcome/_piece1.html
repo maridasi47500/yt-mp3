@@ -1,0 +1,7 @@
+
+<li>
+<b><%=piece["name"]%></b>
+<ul>
+<%=render_collection(collection=db.Ingredient.getallbyid(piece["id"]), partial='welcome/_mapiece.html', as_='ingredient')%>
+</ul>
+</li>

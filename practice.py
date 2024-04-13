@@ -18,7 +18,8 @@ class Practice(Model):
         self.con.commit()
         #self.con.close()
     def getall(self):
-        self.cur.execute("select * from practice")
+        self.cur.execute("select *, (case when practice.jour = 1 then 'lundi' when jour = 2 then 'mardi' when jour = 3 then 'mercredi' when jour = 4 then 'jeudi' when jour = 5 then 'vendredi' when jour = 6 then 'samedi' when jour = 7 then 'dimanche' end) as monjour from practice")
+
 
         row=self.cur.fetchall()
         return row

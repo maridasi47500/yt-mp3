@@ -1,5 +1,0 @@
-{"lieu":{
-"id":"<%=lieu["id"]%>",
-"name":"<%=lieu["name"]%>",
-"pic":"/uploads/<%=lieu["pic"]%>"
-}}

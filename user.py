@@ -11,9 +11,7 @@ class User(Model):
         self.cur.execute("""create table if not exists user(
         id integer primary key autoincrement,
         email text,
-            password text,
-            nomcomplet text,
-            image text
+            password text
                     );""")
         self.con.commit()
         #self.con.close()
@@ -38,8 +36,6 @@ class User(Model):
         print("ok")
         myhash={}
         for x in params:
-            if 'confirmation' in x:
-                continue
             if 'envoyer' in x:
                 continue
             if '[' not in x and x not in ['routeparams']:
@@ -53,9 +49,9 @@ class User(Model):
         myid=None
         azerty={}
         try:
-            if myhash["password"] == myhash["passwordconfirmation"]:
+            if params["password"] == params["passwordconfirmation"]:
                  del myhash["passwordconfirmation"]
-                 self.cur.execute("insert into user (email,password,nomcomplet,image) values (:email,:password,:nomcomplet,:image)",myhash)
+                 self.cur.execute("insert into user (email,password) values (:email,:password)",myhash)
                  self.con.commit()
                  myid=str(self.cur.lastrowid)
 

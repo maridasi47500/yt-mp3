@@ -16,6 +16,11 @@ class Ingredient(Model):
                     );""")
         self.con.commit()
         #self.con.close()
+    def getallbyid(self,id):
+        self.cur.execute("select * from ingredient where id = ?",(id,))
+
+        row=self.cur.fetchall()
+        return row
     def getall(self):
         self.cur.execute("select * from ingredient")
 
