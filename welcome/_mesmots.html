@@ -1,7 +1,0 @@
-<div s="<%=speaker["id"]%>" class="original sentence" id="mysentence<%=speaker["id"]%>" start="<%=speaker["time_debut"]%>" end="<%=speaker["time_fin"]%>">
-	<%hello=speaker["id"]%>
-	<%mylist=speaker["text"].split(" ")%>
-	<%mytext=[dict([("word",value)]) for value in mylist ]%>
-	<%=render_collection(collection=mytext, partial='welcome/_speakertext.html', as_='text', mylocals={"speakerid": speaker["id"]})%>
-
-</div>
