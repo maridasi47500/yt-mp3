@@ -1,24 +1,7 @@
-<img src="/anonymous.jpeg"/> <h1>Hi ! I am anonymous.</h1>
-<p>If you often are not confident on stage, maybe I can help you overcome your fears, to be bulletproof.</p>
-<p>Items déjà ajoutés : </p>
-<h4>stylo</h4>
-<ul>
-<%=render_collection(collection=params['pen'], partial='welcome/_stylo.html', as_='stylo')%>
+<img src="/anonymous.jpeg"/> <h1>Hi ! I am an anonymous bulletproof hacker.</h1>
+<p>ajouter des membres de votre groupe de musique.</p>
+<p>ajouter des nom de bulletproof musicians.</p>
+<p>ajouter des news de votre groupe de musique.</p>
 
-</ul>
-<h4>notebook</h4>
-<ul>
-<%=render_collection(collection=params['notebook'], partial='welcome/_stylo.html', as_='stylo')%>
 
-</ul>
-<h4>piece</h4>
-<ul>
-<%=render_collection(collection=params['piece'], partial='welcome/_piece1.html', as_='piece')%>
-
-</ul>
-<h4>entrainement</h4>
-<ul>
-<%=render_collection(collection=params['practice'], partial='welcome/_practice.html', as_='practice')%>
-
-</ul>
-<p>si vous avez ajouté un peu de morceaux, ingredients, heure entrainement visitez <a href="/aboutme"> à propos de moi</a></p>
+<%=render_collection(collection=db.Post.getall(), partial='welcome/_post.html', as_='post')%>

@@ -33,3 +33,13 @@
 	    float: left;
 	        width: auto;
 	}
+#editmypost{
+width:95%;
+min-height:400px;
+font-size:20px;
+margin:0 20px 0 20px;
+padding:0 20px 0 20px;
+}
+.someselect{
+margin-bottom:30px;
+}

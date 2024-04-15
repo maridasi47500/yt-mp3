@@ -1,12 +1,7 @@
 from directory import Directory
 from render_figure import RenderFigure
-from myscript import Myscript
 from user import User
-from pen import Pen
-from notebook import Notebook
-from piece import Piece
-from practice import Practice
-from ingredient import Ingredient
+from mydb import Mydb
 
 
 from mypic import Pic
@@ -22,13 +17,8 @@ class Route():
         self.Program=Directory("premiere radio")
         self.Program.set_path("./")
         self.mysession={"notice":None,"email":None,"name":None}
-        self.dbScript=Myscript()
-        self.dbPen=Pen()
-        self.dbPiece=Piece()
-        self.dbPractice=Practice()
-        self.dbIngredient=Ingredient()
-        self.dbNotebook=Notebook()
         self.render_figure=RenderFigure(self.Program)
+        self.db=Mydb()
         self.getparams=("id",)
     def set_post_data(self,x):
         self.post_data=x
@@ -73,10 +63,6 @@ class Route():
         self.Program.logout()
         self.set_redirect("/")
         return self.render_figure.render_redirect()
-    def chat(self,search):
-        hi=self.dbScript.getall()
-        self.render_figure.set_param("scripts",hi)
-        return self.render_figure.render_figure("welcome/chat.html")
     def welcome(self,search):
         return self.render_figure.render_figure("welcome/index.html")
     def getenregistrement(self,search):
@@ -85,38 +71,49 @@ class Route():
         myparam=self.get_post_data()(params=("recording",))
         hi=""
         return self.render_some_json("welcome/hey.json")
-    def allscript(self,search):
-        #myparam=self.get_post_data()(params=("name","content",))
-        hi=self.dbScript.getall()
-        self.render_figure.set_param("scripts",hi)
-        return self.render_figure.render_figure("welcome/allscript.html")
-    def lancerscript(self,search):
-        myparam=search["myid"][0]
-        hi=self.dbScript.getbyid(myparam)
-        print(hi, "my script")
-        a=self.scriptpython(hi["name"]).lancer()
-        return self.render_some_json("welcome/monscript.json")
 
 
-    def createpiece(self,search):
+    def createmusician(self,search):
         myparam=self.get_post_data()(params=("name",))
-        hi=self.dbPiece.create(myparam)
+        hi=self.db.Musician.create(myparam)
+        if hi:
+          self.set_notice("votre musician a été ajouté")
+        else:
+          self.set_notice("erreur quand vous avez envoyé le formulaire")
         return self.render_some_json("welcome/mypic.json")
-    def createpractice(self,search):
-        myparam=self.get_post_data()(params=("user_id","debut","fin","jour",))
-        hi=self.dbPractice.create(myparam)
-        return self.render_some_json("welcome/mypic.json")
-    def createingredient(self,search):
-        myparam=self.get_post_data()(params=("piece_id","user_id","ingredient",))
-        hi=self.dbIngredient.create(myparam)
-        return self.render_some_json("welcome/mypic.json")
-    def createnotebook(self,search):
+    def updatepost(self,search):
+        myparam=self.get_post_data()(params=("id","title","content",))
+        hi=self.db.Post.update(myparam)
+        if hi:
+          self.set_notice("votre post a été modifié")
+        else:
+          self.set_notice("erreur quand vous avez envoyé le formulaire")
+        self.render_figure.set_param("post_id",myparam["id"])
+        return self.render_some_json("welcome/mypost.json")
+    def createpost(self,search):
+        myparam=self.get_post_data()(params=("band_id","user_id","title","content",))
+        hi=self.db.Post.create(myparam)
+        if hi:
+          self.set_notice("votre post a été ajouté")
+        else:
+          self.set_notice("erreur quand vous avez envoyé le formulaire")
+        self.render_figure.set_param("post_id",hi["post_id"])
+        return self.render_some_json("welcome/mypost.json")
+    def createband(self,search):
         myparam=self.get_post_data()(params=("name",))
-        hi=self.dbNotebook.create(myparam)
+        hi=self.db.Band.create(myparam)
+        if hi:
+          self.set_notice("votre band a été ajouté")
+        else:
+          self.set_notice("erreur quand vous avez envoyé le formulaire")
         return self.render_some_json("welcome/mypic.json")
-    def createpen(self,search):
-        myparam=self.get_post_data()(params=("name",))
-        hi=self.dbPen.create(myparam)
+    def createmember(self,search):
+        myparam=self.get_post_data()(params=("band_id","name",))
+        hi=self.db.Member.create(myparam)
+        if hi:
+          self.set_notice("votre member a été ajouté")
+        else:
+          self.set_notice("erreur quand vous avez envoyé le formulaire")
         return self.render_some_json("welcome/mypic.json")
     def new1(self,search):
         myparam=self.get_post_data()(params=("script","missiontarget_id","missiontype_id","missionprogram_id",))
@@ -178,12 +175,6 @@ class Route():
         else:
           self.set_code422(True)
         return self.render_some_json("welcome/redirect.json")
-    def monscript(self,search):
-        myparam=self.get_post_data()(params=("name","content",))
-        hey=self.dbCommandline.create(myparam)
-        hi=self.dbScript.create(myparam)
-        print(hey,hi)
-        return self.render_some_json("welcome/monscript.json")
     def enregistrer(self,search):
         print("hello action")
         self.render_figure.set_param("enregistrer",True)
@@ -196,10 +187,10 @@ class Route():
     def hello(self,search):
         print("hello action")
         print("hello action")
-        self.render_figure.set_param("piece",self.dbPiece.getall())
-        self.render_figure.set_param("practice",self.dbPractice.getall())
-        self.render_figure.set_param("pen",self.dbPen.getall())
-        self.render_figure.set_param("notebook",self.dbNotebook.getall())
+        #self.render_figure.set_param("piece",self.dbPiece.getall())
+        #self.render_figure.set_param("practice",self.dbPractice.getall())
+        #self.render_figure.set_param("pen",self.dbPen.getall())
+        #self.render_figure.set_param("notebook",self.dbNotebook.getall())
         print("hello action")
         return self.render_figure.render_figure("welcome/index.html")
     def delete_user(self,params={}):
@@ -215,12 +206,18 @@ class Route():
         print("route params")
         self.render_figure.set_param("user",User().getbyid(myparam["id"]))
         return self.render_figure.render_figure("user/edituser.html")
-    def voirpiece(self,params={}):
+    def editerpost(self,params={}):
         getparams=("id",)
         print("get param, action see my new",getparams)
         myparam=self.get_this_route_param(getparams,params)
-        self.render_figure.set_param("piece",self.dbPiece.getbyid(myparam["id"]))
-        return self.render_figure.render_figure("ajouter/ingredientpiece.html")
+        self.render_figure.set_param("post",self.db.Post.getbyid(myparam["id"]))
+        return self.render_figure.render_figure("ajouter/editerpost.html")
+    def voirpost(self,params={}):
+        getparams=("id",)
+        print("get param, action see my new",getparams)
+        myparam=self.get_this_route_param(getparams,params)
+        self.render_figure.set_param("post",self.db.Post.getbyid(myparam["id"]))
+        return self.render_figure.render_figure("ajouter/voirpost.html")
     def voirpersonne(self,params={}):
         getparams=("id",)
         print("get param, action see my new",getparams)
@@ -244,43 +241,33 @@ class Route():
     def myusers(self,params={}):
         self.render_figure.set_param("users",User().getall())
         return self.render_figure.render_figure("user/users.html")
-    def mypics(self,params={}):
-        self.render_figure.set_param("pics",self.dbFish.getall())
-        return self.render_figure.render_figure("fish/fishes.html")
     def update_user(self,params={}):
         myparam=self.post_data(self.getparams)
         self.user=self.dbUsers.update(params)
         self.set_session(self.user)
         self.set_redirect(("/seeuser/"+params["id"][0]))
     def login(self,s):
-        search=self.get_post_data()(params=("email","password","password_security"))
-        self.user=self.dbUsers.getbyemailpwsecurity(search["email"],search["password"],search["password_security"])
+        search=self.get_post_data()(params=("email","password"))
+        self.user=self.dbUsers.getbyemailpw(search["email"],search["password"])
         print("user trouve", self.user)
         if self.user["email"] != "":
             print("redirect carte didentite")
             self.set_session(self.user)
-            self.set_json("{\"redirect\":\"/cartedidentite\"}")
+            self.set_json("{\"redirect\":\"/\"}")
         else:
             self.set_json("{\"redirect\":\"/youbank\"}")
             print("session login",self.Program.get_session())
         return self.render_figure.render_json()
-    def addingredient(self,search): 
-        self.render_figure.set_param("pieces",self.dbPiece.getall())
-        return self.render_figure.render_figure("ajouter/ingredient.html")
-    def addpractice(self,search): 
-        return self.render_figure.render_figure("ajouter/practice.html")
-    def addpiece(self,search):
+    def addpost(self,search): 
+        return self.render_figure.render_figure("ajouter/post.html")
+    def addmember(self,search): 
+        return self.render_figure.render_figure("ajouter/member.html")
+    def addband(self,search):
 
-        return self.render_figure.render_figure("ajouter/piece.html")
-    def addnotebook(self,search):
+        return self.render_figure.render_figure("ajouter/band.html")
+    def addmusician(self,search):
 
-        return self.render_figure.render_figure("ajouter/notebook.html")
-    def addpen(self,search):
-
-        return self.render_figure.render_figure("ajouter/pen.html")
-    def ajouterevent(self,search):
-
-        return self.render_figure.render_figure("ajouter/event.html")
+        return self.render_figure.render_figure("ajouter/musician.html")
     def ajouterenregistrement(self,search):
         getparams=("id",)
 
@@ -395,18 +382,20 @@ class Route():
             path=path.split("?")[0]
             print("link route ",path)
             ROUTES={
-            '^/createingredient$': self.createingredient,
-            '^/createpractice$': self.createpractice,
-            '^/createpiece$': self.createpiece,
-            '^/createstylo$': self.createpen,
-            '^/createnotebook$': self.createnotebook,
-            '^/ajouteringredientpiece/([0-9]+)$': self.voirpiece,
-            '^/ajouteringredient$': self.addingredient,
+            '^/createmusician$': self.createmusician,
+            '^/createband$': self.createband,
+            '^/createpost$': self.createpost,
+            '^/createmember$': self.createmember,
 
-            '^/ajouterpractice$': self.addpractice,
-            '^/ajouterpiece$': self.addpiece,
-            '^/ajouterstylo$': self.addpen,
-            '^/ajouternotebook$': self.addnotebook,
+            '^/ajoutermusician$': self.addmusician,
+            '^/ajouterband$': self.addband,
+
+            '^/ajouterpost$': self.addpost,
+            '^/voirpost/([0-9]+)$': self.voirpost,
+            '^/editerpost/([0-9]+)$': self.editerpost,
+            '^/updatepost$': self.updatepost,
+            '^/ajoutermember$': self.addmember,
+
             '^/aboutme$': self.aboutme,
             '^/welcome$': self.welcome,
             '^/sign_in$': self.signin,
@@ -436,7 +425,7 @@ class Route():
                    try:
                        html=mycase(params)
                        print("html bon")
-                       print(html)
+                       #print(html)
                    except Exception as e:  
                        print("erreur"+str(e),traceback.format_exc())
                        html=("<p>une erreur s'est produite dans le code server  "+(traceback.format_exc())+"</p><a href=\"/\">retour à l'accueil</a>").encode("utf-8")

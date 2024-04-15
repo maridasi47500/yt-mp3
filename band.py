@@ -3,30 +3,30 @@ import sqlite3
 import sys
 import re
 from model import Model
-class Notebook(Model):
+class Band(Model):
     def __init__(self):
         self.con=sqlite3.connect(self.mydb)
         self.con.row_factory = sqlite3.Row
         self.cur=self.con.cursor()
-        self.cur.execute("""create table if not exists notebook(
+        self.cur.execute("""create table if not exists band(
         id integer primary key autoincrement,
         name text
                     );""")
         self.con.commit()
         #self.con.close()
     def getall(self):
-        self.cur.execute("select * from notebook")
+        self.cur.execute("select * from band")
 
         row=self.cur.fetchall()
         return row
     def deletebyid(self,myid):
 
-        self.cur.execute("delete from notebook where id = ?",(myid,))
+        self.cur.execute("delete from band where id = ?",(myid,))
         job=self.cur.fetchall()
         self.con.commit()
         return None
     def getbyid(self,myid):
-        self.cur.execute("select * from notebook where id = ?",(myid,))
+        self.cur.execute("select * from band where id = ?",(myid,))
         row=dict(self.cur.fetchone())
         print(row["id"], "row id")
         job=self.cur.fetchall()
@@ -49,14 +49,14 @@ class Notebook(Model):
         print(myhash,myhash.keys())
         myid=None
         try:
-          self.cur.execute("insert into notebook (name) values (:name)",myhash)
+          self.cur.execute("insert into band (name) values (:name)",myhash)
           self.con.commit()
           myid=str(self.cur.lastrowid)
         except Exception as e:
           print("my error"+str(e))
         azerty={}
-        azerty["notebook_id"]=myid
-        azerty["notice"]="votre notebook a été ajouté"
+        azerty["band_id"]=myid
+        azerty["notice"]="votre band a été ajouté"
         return azerty
 
 

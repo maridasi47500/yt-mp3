@@ -26,6 +26,20 @@ class User(Model):
         job=self.cur.fetchall()
         self.con.commit()
         return None
+    def getbyemailpw(self,email,pw):
+        self.cur.execute("select * from user where email = ? and password = ?",(email,pw,))
+        azerty=self.cur.fetchone()
+        row=dict({})
+        if azerty:
+          row=dict(azerty)
+          row["user_id"]=row["id"]
+          row["notice"]="Vous êtes connecté(e)"
+          print(row["id"], "row id")
+        else:
+          row=dict({})
+          row["notice"]="le login ou le mot de passe ne sont pas bon"
+          row["user_id"]=""
+        return row
     def getbyid(self,myid):
         self.cur.execute("select * from user where id = ?",(myid,))
         row=dict(self.cur.fetchone())

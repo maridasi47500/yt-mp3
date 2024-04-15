@@ -3,37 +3,30 @@ import sqlite3
 import sys
 import re
 from model import Model
-class Ingredient(Model):
+class Musician(Model):
     def __init__(self):
         self.con=sqlite3.connect(self.mydb)
         self.con.row_factory = sqlite3.Row
         self.cur=self.con.cursor()
-        self.cur.execute("""create table if not exists ingredient(
+        self.cur.execute("""create table if not exists musician(
         id integer primary key autoincrement,
-        piece_id text,
-            ingredient text,
-            user_id integer
+        name text
                     );""")
         self.con.commit()
         #self.con.close()
-    def getallbyid(self,id):
-        self.cur.execute("select * from ingredient where id = ?",(id,))
-
-        row=self.cur.fetchall()
-        return row
     def getall(self):
-        self.cur.execute("select * from ingredient")
+        self.cur.execute("select * from musician")
 
         row=self.cur.fetchall()
         return row
     def deletebyid(self,myid):
 
-        self.cur.execute("delete from ingredient where id = ?",(myid,))
+        self.cur.execute("delete from musician where id = ?",(myid,))
         job=self.cur.fetchall()
         self.con.commit()
         return None
     def getbyid(self,myid):
-        self.cur.execute("select * from ingredient where id = ?",(myid,))
+        self.cur.execute("select * from musician where id = ?",(myid,))
         row=dict(self.cur.fetchone())
         print(row["id"], "row id")
         job=self.cur.fetchall()
@@ -56,14 +49,14 @@ class Ingredient(Model):
         print(myhash,myhash.keys())
         myid=None
         try:
-          self.cur.execute("insert into ingredient (piece_id,ingredient,user_id) values (:piece_id,:ingredient,:user_id)",myhash)
+          self.cur.execute("insert into musician (name) values (:name)",myhash)
           self.con.commit()
           myid=str(self.cur.lastrowid)
         except Exception as e:
           print("my error"+str(e))
         azerty={}
-        azerty["ingredient_id"]=myid
-        azerty["notice"]="votre ingredient a été ajouté"
+        azerty["musician_id"]=myid
+        azerty["notice"]="votre musician a été ajouté"
         return azerty
 
 

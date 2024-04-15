@@ -1,0 +1,34 @@
+<%post=params["post"]%>
+<div id="message"></div>
+<h1><%=post["title"]%></h1>
+
+
+<select id="members">
+<option value="">séléctionner un membre dans le texte</option>
+<%=render_collection(collection=db.Member.getall(), partial='welcome/_member.html', as_='band')%>
+
+
+</select>
+<select class="someselect" id="link">
+<option value="">séléctionner un musicien</option>
+<%=render_collection(collection=db.Musician.getall(), partial='welcome/_member.html', as_='band')%>
+
+
+</select>
+<hr>
+<form action="/updatepost" method="post">
+<input id="idmypost" type="hidden" name="id" value="<%=post["id"]%>" />
+<div class="field">
+<label for="titlemypost">title</label>
+<input id="titlemypost" type="text" name="title" value="<%=post["title"]%>" />
+</div>
+<div class="field">
+<label for="editmypost">content</label>
+<textarea name="content" id="editmypost">
+<%=post["content"]%></textarea>
+</div>
+<div class="actions">
+
+<input id="submitmypost" type="submit" name="submti" value="éditer le post" />
+</div>
+</form>

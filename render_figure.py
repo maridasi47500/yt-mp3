@@ -50,7 +50,7 @@ class RenderFigure():
               print("my session",self.session)
 
               if k[0]:
-                print(k[0])
+                #print(k[0])
                 l=exec("myvalue="+k[0], globals(), loc)
                 mystr+=str(loc["myvalue"]) if loc["myvalue"] is not None else ""
               if k[1]:
@@ -63,12 +63,12 @@ class RenderFigure():
               k=j.split("%>")
               print("my session",self.session)
               loc={"db":Mydb(),"session": self.session,"render_collection": self.render_collection,"params":self.params,"getparams": self.getparams,"Fichier":Fichier,"date":date}
-              print(k[0])
+              #print(k[0])
               l=exec(k[0], globals(), loc)
               if k[1]:
                 mystr+=k[1]
           print("render body bon")
-          print(mystr)
+          #print(mystr)
           return mystr
         except Exception:
           print("render body mauvais")
@@ -101,10 +101,10 @@ class RenderFigure():
                             continue
 
                         k=j.split("%>")
-                        print(dict(x))
+                        #print(dict(x))
                         if k[0]:
-                            print(k[0], "content render")
-                            print(k[0])
+                            #print(k[0], "content render")
+                            #print(k[0])
                             l=exec("myvalue="+k[0], globals(), loc)
                             mystr+=str(loc["myvalue"])
                         if k[1]:
@@ -116,10 +116,10 @@ class RenderFigure():
 
                         k=j.split("%>")
 
-                        print(dict(x))
+                        #print(dict(x))
                         if k[0]:
-                            print(k[0], "content render")
-                            print(k[0])
+                            #print(k[0], "content render")
+                            #print(k[0])
                             l=exec(k[0], globals(), loc)
                             #mystr+=str(loc["myvalue"])
                         if k[1]:
