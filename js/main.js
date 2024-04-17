@@ -1,9 +1,17 @@
-$(function(){
-if (window.location.pathname !== "/" && window.location.pathname !== "/sign_in" && window.location.pathname !== "/sign_up" && window.location.pathname !== "/aboutme" && myuserid.innerHTML == "") {
-alert("pas connecté-e vous allez être redirigé(e)")
-window.location="/";
+function myurl(value){
+	inserershorturl.value=(new URL(value)).origin;
 }
-if (editmypost){
+
+$(function(){
+if (window.location.pathname !== "/sign_in" && window.location.pathname !== "/sign_up" && window.location.pathname !== "/aboutme" && myuserid.innerHTML == "") {
+alert("pas connecté-e vous allez être redirigé(e)")
+window.location="/sign_in";
+
+}else if(window.location.pathname !== "/ajouterband" && Number(nbgroup.innerHTML) === 0){
+alert("ajouter des groupe de musique")
+window.location="/ajouterband";
+}
+if (document.getElementById("editmypost")){
 
 document.getElementById("members").onchange = function() {
 

@@ -14,7 +14,7 @@ import sys
 class Route():
     def __init__(self):
         self.dbUsers=User()
-        self.Program=Directory("premiere radio")
+        self.Program=Directory("Mes articles de musique pare-balle")
         self.Program.set_path("./")
         self.mysession={"notice":None,"email":None,"name":None}
         self.render_figure=RenderFigure(self.Program)
@@ -81,6 +81,15 @@ class Route():
         else:
           self.set_notice("erreur quand vous avez envoyé le formulaire")
         return self.render_some_json("welcome/mypic.json")
+    def myurl(self,search):
+        myparam=self.get_post_data()(params=("url","shorturl","div","user_id","band_id"))
+        hi=self.db.Link.create(myparam)
+        if hi:
+          self.set_notice("votre article a été téléchargé")
+        else:
+          self.set_notice("erreur quand vous avez envoyé le formulaire")
+        self.render_figure.set_param("post_id",hi["post_id"])
+        return self.render_some_json("welcome/mypost.json")
     def updatepost(self,search):
         myparam=self.get_post_data()(params=("id","title","content",))
         hi=self.db.Post.update(myparam)
@@ -247,10 +256,10 @@ class Route():
         self.set_session(self.user)
         self.set_redirect(("/seeuser/"+params["id"][0]))
     def login(self,s):
-        search=self.get_post_data()(params=("email","password"))
-        self.user=self.dbUsers.getbyemailpw(search["email"],search["password"])
+        search=self.get_post_data()(params=("phone","password"))
+        self.user=self.dbUsers.getbyphonepw(search["phone"],search["password"])
         print("user trouve", self.user)
-        if self.user["email"] != "":
+        if self.user["phone"] != "":
             print("redirect carte didentite")
             self.set_session(self.user)
             self.set_json("{\"redirect\":\"/\"}")
@@ -321,7 +330,7 @@ class Route():
         return self.render_figure.render_figure("ajouter/notebook.html")
 
     def save_user(self,params={}):
-        myparam=self.get_post_data()(params=("email","password","passwordconfirmation"))
+        myparam=self.get_post_data()(params=("country_id","phone","password","passwordconfirmation"))
         self.user=self.dbUsers.create(myparam)
         if self.user["user_id"]:
             self.set_session(self.user)
@@ -386,6 +395,7 @@ class Route():
             '^/createband$': self.createband,
             '^/createpost$': self.createpost,
             '^/createmember$': self.createmember,
+            '^/myurl$': self.myurl,
 
             '^/ajoutermusician$': self.addmusician,
             '^/ajouterband$': self.addband,

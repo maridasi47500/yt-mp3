@@ -54,6 +54,7 @@
   </div>
 </nav>
         <h1>{debutmots}</h1>
+<div id="nbgroup" hidden><%=len(db.Band.getall())%></div>
 <div id="notice"><%=session["notice"]%></div>
 <div id="myuserid" hidden><%=session["user_id"]%></div>
         {plusdemot}

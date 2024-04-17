@@ -10,7 +10,8 @@ class User(Model):
         self.cur=self.con.cursor()
         self.cur.execute("""create table if not exists user(
         id integer primary key autoincrement,
-        email text,
+        country_id text,
+        phone text,
             password text
                     );""")
         self.con.commit()
@@ -26,8 +27,8 @@ class User(Model):
         job=self.cur.fetchall()
         self.con.commit()
         return None
-    def getbyemailpw(self,email,pw):
-        self.cur.execute("select * from user where email = ? and password = ?",(email,pw,))
+    def getbyphonepw(self,email,pw):
+        self.cur.execute("select * from user where phone like ? and password = ?",(email,pw,))
         azerty=self.cur.fetchone()
         row=dict({})
         if azerty:
@@ -37,7 +38,7 @@ class User(Model):
           print(row["id"], "row id")
         else:
           row=dict({})
-          row["notice"]="le login ou le mot de passe ne sont pas bon"
+          row["notice"]="le numero de téléphone ou le mot de passe ne sont pas bon"
           row["user_id"]=""
         return row
     def getbyid(self,myid):
@@ -65,7 +66,7 @@ class User(Model):
         try:
             if params["password"] == params["passwordconfirmation"]:
                  del myhash["passwordconfirmation"]
-                 self.cur.execute("insert into user (email,password) values (:email,:password)",myhash)
+                 self.cur.execute("insert into user (country_id,phone,password) values (:country_id,:phone,:password)",myhash)
                  self.con.commit()
                  myid=str(self.cur.lastrowid)
 

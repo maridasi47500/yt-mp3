@@ -43,3 +43,26 @@ padding:0 20px 0 20px;
 .someselect{
 margin-bottom:30px;
 }
+h1 img{
+	width:50px;
+	height:50px;
+}
+.urlform {
+		text-align: center;
+	}
+	#submiturlbtn1 {
+			background: green;
+				color: white;
+						height: 50px;
+						padding:0 10px 0 10px;
+			}
+	#submiturlbtn {
+			background: red;
+				color: white;
+						height: 50px;
+						padding:0 10px 0 10px;
+			}
+			#insererurl,#insererurldiv1,#insererband {
+					width: 70%;
+						height: 50px;
+					}

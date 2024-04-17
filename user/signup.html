@@ -2,9 +2,17 @@
 <form method="post" action="/save_user">
 <table>
 <tr>
-<td >
-        email
-<input type="text" name="email"/>
+<td class="field phone_fields">
+	<label for="pays_telephone" hidden="true">pays du numéro de téléphone</label>
+	<label for="numero_telephone" >numéro de téléphone</label>
+
+	<select id="pays_telephone" name="country_id">
+		<option value="">sélectionnez un pays</option>
+		    <%=render_collection(collection=db.Country.getall(), partial='user/_pays.html', as_='pays')%>
+	</select>
+
+<input id="numero_telephone" type="number" name="phone"/>
+
 </td>
 </tr>
 <tr>
