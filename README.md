@@ -2,6 +2,8 @@
 
 - ajouter des musicians d'un groupe de musique
 - modifier avec d'autres musiciens "bangtan" ou "bulletproof" pour toi
+- télécharger rapidement des articles par l'url 
+- chercher des articles
 
 - lancer:
 ```
