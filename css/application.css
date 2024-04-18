@@ -66,3 +66,25 @@ h1 img{
 					width: 70%;
 						height: 50px;
 					}
+					#google span {
+							font-size: 59px;
+								font-weight: 600;
+							}
+							#google {
+									text-align: center;
+								}
+								#google .red {
+										color: #e21616;
+									}
+									#google .yellow {
+											color: #cfcc14;
+										}
+									#google .green {
+											color: #077e04;
+										}
+									#google .blue {
+											color: #035cab;
+										}
+										svg {
+											    max-width: 20px;
+										    }

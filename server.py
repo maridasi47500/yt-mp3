@@ -234,17 +234,29 @@ class S(BaseHTTPRequestHandler):
            self.wfile.write("erreur dans le html")
     def do_POST(self):
         content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
-        #post_data = self.rfile.read(content_length) # <--- Gets the data itself
+
         #logging.info("POST request,\nPath: %s\nHeaders:\n%s\n\nBody:\n%s\n",
                 #str(self.path), str(self.headers), "post data")
         myparams = parse_qs(urlparse(self.path).query)
         dictcook=(req.cookies.get_dict())
         #print("d i ct cook",dictcook)
         #print("p a r a m s",myparams)
+        new_dict=None
+        post_data=None
+        myProgram=None
 
 
         #logging.info(parse.parse_qs(post_data.decode('utf-8')))
-        myProgram=Route().run(path=str(self.path),params=myparams,session=dictcook,url=self.path,post_data=self.deal_post_data)
+        if str(self.path) not in ["/voirsearch","/mydiv"]:
+          new_dict = self.deal_post_data
+        else:
+          print("hey")
+          post_data = parse_qs(self.rfile.read(content_length).decode("utf-8")) # <--- Gets the data itself
+          #new_dict = {k.decode(): v for k,v in post_data.items()}
+          new_dict = {k: v for k,v in post_data.items()}
+
+
+        myProgram=Route().run(path=str(self.path),params=myparams,session=dictcook,url=self.path,post_data=new_dict)
         sess= myProgram.get_session()
         if sess:
           for x in sess:

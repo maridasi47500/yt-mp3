@@ -74,7 +74,7 @@ class RenderFigure():
           print("render body mauvais")
           l="<div style='background:red;color:white;'>erreurici pour afficher <div class=\"codeerreur\" style=\"background:black;color:white;\">"+k[0]+"</div>"+traceback.format_exc()+"<br>"+str(e)+"</div>".replace("\r\n",'<br>')
 
-          return mystr
+          return l
     def render_collection(self, collection,partial,as_,mylocals={}):
         print("render collection")
         try:
@@ -216,6 +216,6 @@ class RenderFigure():
             return self.body.encode("utf-8")
           except:
             return self.body
-        except:
+        except Exception as e:
           print("render figure mauvaos")
-          return "erreur dans render figure"
+          return ("<meta charset=\"utf-8\"><div>Un certain truc sest mal passé avec<div style=\"background:black;color:#eb00eb;\" class=\"someerror\"> "+k[0]+"</div>---><div style=\"background:black;color:#eb00eb;\" class=\"someerror\">"+str(e)+"-- ligne "+str(ligne)+"</div></div>").encode("utf-8")

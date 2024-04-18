@@ -3,10 +3,14 @@ import sqlite3
 import sys
 import re
 from model import Model
+from bs4 import BeautifulSoup
 class Post(Model):
+    def get_text(self,hey):
+        return BeautifulSoup(hey).get_text()
     def __init__(self):
         self.con=sqlite3.connect(self.mydb)
         self.con.row_factory = sqlite3.Row
+        self.con.create_function("GET_TEXT",1,self.get_text)
         self.cur=self.con.cursor()
         self.cur.execute("""create table if not exists post(
         id integer primary key autoincrement,
@@ -17,13 +21,17 @@ class Post(Model):
                     );""")
         self.con.commit()
         #self.con.close()
+    def search(self,search):
+        s="%"+search.replace(" ","%")+"%"
+        t=search.split(" ")[0]
+        self.cur.execute("select *, GET_TEXT(content) as mycontent, INSTR(lower(GET_TEXT(content)), ?) position1, INSTR(lower(GET_TEXT(title)),?) position2 from post where lower(GET_TEXT(title)) like ? or lower(GET_TEXT(content)) like ?", (t,t,s,s))
+        row=self.cur.fetchall()
+        return row
     def getall(self):
         self.cur.execute("select * from post")
-
         row=self.cur.fetchall()
         return row
     def deletebyid(self,myid):
-
         self.cur.execute("delete from post where id = ?",(myid,))
         job=self.cur.fetchall()
         self.con.commit()

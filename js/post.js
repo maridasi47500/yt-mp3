@@ -61,7 +61,7 @@ return false;
 	return false;
   });
 }
-$('form:not(#urlform)').on('submit', function () {
+$('form:not(#urlform):not(.searchform)').on('submit', function () {
   if (window.filesize > 1024*5) {
     alert('max upload size is 5k');
 return false;

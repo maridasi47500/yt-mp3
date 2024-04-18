@@ -22,6 +22,12 @@ class Route():
         self.getparams=("id",)
     def set_post_data(self,x):
         self.post_data=x
+    def get_some_post_data(self,params=()):
+        x={}
+        for y in params:
+            print(self.post_data[y])
+            x[y]=self.post_data[y][0]
+        return x
     def get_post_data(self):
         return self.post_data
     def set_my_session(self,x):
@@ -71,14 +77,18 @@ class Route():
         myparam=self.get_post_data()(params=("recording",))
         hi=""
         return self.render_some_json("welcome/hey.json")
-    def voirsearch(self,search):
-        myparam=self.get_post_data()(params=("search",))
+    def voirsearch(self,wow):
+
+        myparam=self.get_some_post_data(params=("search",))
+        print(myparam,"P A R A M E T R E")
+        s=myparam["search"]
         try:
-          self.set_notice("vous avez cherché "+myparam["search"])
+          self.set_notice("vous avez cherché "+s.encode())
 
         except:
           self.set_notice("erreur quand vous avez envoyé le formulaire")
-        return self.render_some_json("welcome/mypic.json")
+        self.render_figure.set_param("search",s)
+        return self.render_figure.render_figure("welcome/voirsearch.html")
     def createmusician(self,search):
         myparam=self.get_post_data()(params=("name",))
         hi=self.db.Musician.create(myparam)
@@ -87,6 +97,11 @@ class Route():
         else:
           self.set_notice("erreur quand vous avez envoyé le formulaire")
         return self.render_some_json("welcome/mypic.json")
+    def mydiv(self,search):
+        myparam=self.get_some_post_data(params=("div1","user_id"))
+        hi=self.db.Link.find_by_url(url=myparam["div1"],user_id=myparam["user_id"])
+        self.render_figure.set_param("url",hi)
+        return self.render_some_json("welcome/myurl.json")
     def myurl(self,search):
         myparam=self.get_post_data()(params=("url","shorturl","div","user_id","band_id"))
         hi=self.db.Link.create(myparam)
@@ -404,18 +419,16 @@ class Route():
             '^/createpost$': self.createpost,
             '^/createmember$': self.createmember,
             '^/myurl$': self.myurl,
+            '^/mydiv$': self.mydiv,
             '^/search$': self.search,
             '^/voirsearch$': self.voirsearch,
-
             '^/ajoutermusician$': self.addmusician,
             '^/ajouterband$': self.addband,
-
             '^/ajouterpost$': self.addpost,
             '^/voirpost/([0-9]+)$': self.voirpost,
             '^/editerpost/([0-9]+)$': self.editerpost,
             '^/updatepost$': self.updatepost,
             '^/ajoutermember$': self.addmember,
-
             '^/aboutme$': self.aboutme,
             '^/welcome$': self.welcome,
             '^/sign_in$': self.signin,
@@ -426,13 +439,11 @@ class Route():
             '^/update_user$':self.update_user,
             "^/seeuser/([0-9]+)$":self.seeuser,
             "^/edituser/([0-9]+)$":self.edit_user,
-                                                            "^/deleteuser/([0-9]+)$":self.delete_user,
-                                                                                '^/login$':self.login,
-
-                                                                                                    '^/users$':self.myusers,
-                    '^/$': self.hello
-
-                    }
+            "^/deleteuser/([0-9]+)$":self.delete_user,
+            '^/login$':self.login,
+            '^/users$':self.myusers,
+            '^/$': self.hello
+            }
             REDIRECT={"/save_user": "/welcome"}
             for route in ROUTES:
                print("pattern=",route)

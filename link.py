@@ -35,6 +35,11 @@ class Link(Model):
         job=self.cur.fetchall()
         self.con.commit()
         return None
+    def find_by_url(self,url="",user_id=""):
+        self.cur.execute("select * from link where shorturl = ? and user_id = ?",(url,user_id))
+        row=dict(self.cur.fetchone())
+        print(row["id"], "row id")
+        return row["div"]
     def getbyid(self,myid):
         self.cur.execute("select * from link where id = ?",(myid,))
         row=dict(self.cur.fetchone())

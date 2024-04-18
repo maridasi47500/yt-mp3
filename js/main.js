@@ -1,5 +1,15 @@
 function myurl(value){
 	inserershorturl.value=(new URL(value)).origin;
+	$.ajax({url:"/mydiv",type:"post",data:{"user_id":myuserid.innerHTML,"div1": inserershorturl.value},
+	success:function(data){
+		if (data.div1.length > 0){
+		insererurldiv1.value=data.div1;
+		insererurldiv1.parentElement.style.display="block";
+		}else{
+		insererurldiv1.value="";
+		insererurldiv1.parentElement.style.display="block";
+		}
+	}});
 }
 
 $(function(){
