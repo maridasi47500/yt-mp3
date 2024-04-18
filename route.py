@@ -45,23 +45,23 @@ class Route():
         self.Program.set_session_params({"notice":x})
         self.render_figure.set_session(self.Program.get_session())
     def set_session(self,x):
-          print("set session",x)
-          self.Program.set_session(x)
-          self.render_figure.set_session(self.Program.get_session())
+        print("set session",x)
+        self.Program.set_session(x)
+        self.render_figure.set_session(self.Program.get_session())
     def get_this_get_param(self,x,params):
-          print("set session",x)
-          hey={}
-          for a in x:
-              hey[a]=params[a][0]
-          return hey
-          
+        print("set session",x)
+        hey={}
+        for a in x:
+          hey[a]=params[a][0]
+        return hey
     def get_this_route_param(self,x,params):
-          print("set session",x)
-          return dict(zip(x,params["routeparams"]))
-          
+        print("set session",x)
+        return dict(zip(x,params["routeparams"]))
     def logout(self,search):
         self.Program.logout()
-        self.set_redirect("/")
+        self.set_notice("vous êtes déconnecté(e)")
+        self.set_redirect("/sign_in")
+
         return self.render_figure.render_redirect()
     def welcome(self,search):
         return self.render_figure.render_figure("welcome/index.html")
@@ -71,8 +71,14 @@ class Route():
         myparam=self.get_post_data()(params=("recording",))
         hi=""
         return self.render_some_json("welcome/hey.json")
+    def voirsearch(self,search):
+        myparam=self.get_post_data()(params=("search",))
+        try:
+          self.set_notice("vous avez cherché "+myparam["search"])
 
-
+        except:
+          self.set_notice("erreur quand vous avez envoyé le formulaire")
+        return self.render_some_json("welcome/mypic.json")
     def createmusician(self,search):
         myparam=self.get_post_data()(params=("name",))
         hi=self.db.Musician.create(myparam)
@@ -267,6 +273,8 @@ class Route():
             self.set_json("{\"redirect\":\"/youbank\"}")
             print("session login",self.Program.get_session())
         return self.render_figure.render_json()
+    def search(self,search): 
+        return self.render_figure.render_figure("ajouter/search.html")
     def addpost(self,search): 
         return self.render_figure.render_figure("ajouter/post.html")
     def addmember(self,search): 
@@ -396,6 +404,8 @@ class Route():
             '^/createpost$': self.createpost,
             '^/createmember$': self.createmember,
             '^/myurl$': self.myurl,
+            '^/search$': self.search,
+            '^/voirsearch$': self.voirsearch,
 
             '^/ajoutermusician$': self.addmusician,
             '^/ajouterband$': self.addband,

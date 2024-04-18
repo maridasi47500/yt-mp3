@@ -23,6 +23,7 @@ class Directory():
             except:
                 print("erreur session logout ",x)
                 self.session[x]=""
+        self.session["notice"]="Vous êtes déconnecté(e)"
         self.session["mysession"]=True
     def not_notice(self):
         self.session["notice"]=""

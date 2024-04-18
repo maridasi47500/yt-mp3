@@ -21,7 +21,7 @@
 		<input type="text" id="insererurldiv1" name="div" placeholder="insérer la class /l'id div" />
 		</div>
 		<div class="field">
-			<label for="penband"></label>
+			<label for="penband">sélectionne un groupe de musique</label>
 			<%="" if len(db.Band.getall()) > 0 else "ajouter un groupe de musique"%>
 			<select id="insererband" name="band_id">
 				<%=render_collection(collection=db.Band.getall(), partial='welcome/_band.html', as_='band')%>
