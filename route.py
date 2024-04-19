@@ -4,6 +4,7 @@ from user import User
 from mydb import Mydb
 
 
+from mymusic import Music
 from myvideo import Video
 from mypic import Pic
 from javascript import Js
