@@ -4,6 +4,7 @@ from user import User
 from mydb import Mydb
 
 
+from myvideo import Video
 from mypic import Pic
 from javascript import Js
 from stylesheet import Css
@@ -283,6 +284,9 @@ class Route():
             self.render_figure.ajouter_a_mes_mots(balise="section",text=self.Program.get_title())
         if path and path.endswith("png"):
             self.Program=Pic(path)
+            self.Program.set_path("./")
+        elif path and path.endswith("mp4"):
+            self.Program=Video(path)
             self.Program.set_path("./")
         elif path and path.endswith("mp3"):
             self.Program=Music(path)

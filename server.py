@@ -174,7 +174,7 @@ class S(BaseHTTPRequestHandler):
         except Exception as e:
             print(e,"my exception")
         return myhash
-    def _set_response(self,redirect=False,cookies=False,pic=False,js=False,css=False,json=False,code422=False,music=False):
+    def _set_response(self,redirect=False,cookies=False,pic=False,js=False,css=False,json=False,code422=False,music=False,vid=False):
         if code422:
           self.send_response(322)
           self.send_header('Status', '322 Unprocessable Entity')
@@ -197,6 +197,11 @@ class S(BaseHTTPRequestHandler):
         elif js:
           self.send_response(200)
           self.send_header('Content-type', 'text/javascript')
+        elif vid:
+          self.send_response(200)
+
+
+          self.send_header('Content-Type', 'video/'+vid)
         elif music:
           self.send_response(200)
 
@@ -227,7 +232,7 @@ class S(BaseHTTPRequestHandler):
             for cookie in req.cookies:
                     cookie.value = sess[cookie.name]
 
-        self._set_response(redirect=myProgram.get_redirect(),cookies=req.cookies,pic=myProgram.get_pic(),js=myProgram.get_js(),css=myProgram.get_css(),json=myProgram.get_json(),code422=myProgram.get_code422(),music=myProgram.get_music())
+        self._set_response(redirect=myProgram.get_redirect(),cookies=req.cookies,pic=myProgram.get_pic(),js=myProgram.get_js(),css=myProgram.get_css(),json=myProgram.get_json(),code422=myProgram.get_code422(),music=myProgram.get_music(),vid=myProgram.get_vid())
         try:
            self.wfile.write(myProgram.get_html())
         except:
@@ -262,7 +267,7 @@ class S(BaseHTTPRequestHandler):
           for x in sess:
             req.cookies.set(x,sess[x])
 
-        self._set_response(redirect=myProgram.get_redirect(),cookies=req.cookies,pic=myProgram.get_pic(),js=myProgram.get_js(),css=myProgram.get_css(),json=myProgram.get_json(),code422=myProgram.get_code422(),music=myProgram.get_music())
+        self._set_response(redirect=myProgram.get_redirect(),cookies=req.cookies,pic=myProgram.get_pic(),js=myProgram.get_js(),css=myProgram.get_css(),json=myProgram.get_json(),code422=myProgram.get_code422(),music=myProgram.get_music(),vid=myProgram.get_vid())
         self.wfile.write(myProgram.get_html())
 
 def run(server_class=ThreadedHTTPServer, handler_class=S, port=8081,host="0.0.0.0"):
