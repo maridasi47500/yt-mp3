@@ -1,9 +1,5 @@
-- bienvenue à bulletproof news ou bangtan news
+- bienvenue à yt mp3
 
-- ajouter des musicians d'un groupe de musique
-- modifier avec d'autres musiciens "bangtan" ou "bulletproof" pour toi
-- télécharger rapidement des articles par l'url 
-- chercher des articles
 
 - lancer:
 ```
@@ -12,5 +8,8 @@ $ sh mysite.sh
 - visit http://localhost:8080
 
 
-# bangtan-news
-# pare-balles-url
+This is a known issue, fixed in Master. For a temporary fix,
+
+python3 -m pip install --force-reinstall https://github.com/yt-dlp/yt-dlp/archive/master.tar.gz
+
+# yt-mp3
