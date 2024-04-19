@@ -78,6 +78,7 @@ class Link(Model):
         except Exception as e:
           print("my error"+str(e))
         azerty={}
+        azerty["filename"]=myhash["filename"]
         azerty["link_id"]=myid
         azerty["notice"]="votre link a été ajouté"
         return azerty
