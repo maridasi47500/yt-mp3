@@ -77,74 +77,20 @@ class Route():
         myparam=self.get_post_data()(params=("recording",))
         hi=""
         return self.render_some_json("welcome/hey.json")
-    def voirsearch(self,wow):
-
-        myparam=self.get_some_post_data(params=("search",))
-        print(myparam,"P A R A M E T R E")
-        s=myparam["search"]
-        try:
-          self.set_notice("vous avez cherché "+s.encode())
-
-        except:
-          self.set_notice("erreur quand vous avez envoyé le formulaire")
-        self.render_figure.set_param("search",s)
-        return self.render_figure.render_figure("welcome/voirsearch.html")
-    def createmusician(self,search):
-        myparam=self.get_post_data()(params=("name",))
-        hi=self.db.Musician.create(myparam)
-        if hi:
-          self.set_notice("votre musician a été ajouté")
-        else:
-          self.set_notice("erreur quand vous avez envoyé le formulaire")
-        return self.render_some_json("welcome/mypic.json")
     def mydiv(self,search):
         myparam=self.get_some_post_data(params=("div1","user_id"))
         hi=self.db.Link.find_by_url(url=myparam["div1"],user_id=myparam["user_id"])
         self.render_figure.set_param("url",hi)
         return self.render_some_json("welcome/myurl.json")
     def myurl(self,search):
-        myparam=self.get_post_data()(params=("url","shorturl","div","user_id","band_id"))
+        myparam=self.get_post_data()(params=("download","url","user_id","filename"))
         hi=self.db.Link.create(myparam)
         if hi:
-          self.set_notice("votre article a été téléchargé")
+          self.set_notice("votre musique a été téléchargée")
         else:
           self.set_notice("erreur quand vous avez envoyé le formulaire")
-        self.render_figure.set_param("post_id",hi["post_id"])
+        self.render_figure.set_param("filename",hi["filename"])
         return self.render_some_json("welcome/mypost.json")
-    def updatepost(self,search):
-        myparam=self.get_post_data()(params=("id","title","content",))
-        hi=self.db.Post.update(myparam)
-        if hi:
-          self.set_notice("votre post a été modifié")
-        else:
-          self.set_notice("erreur quand vous avez envoyé le formulaire")
-        self.render_figure.set_param("post_id",myparam["id"])
-        return self.render_some_json("welcome/mypost.json")
-    def createpost(self,search):
-        myparam=self.get_post_data()(params=("band_id","user_id","title","content",))
-        hi=self.db.Post.create(myparam)
-        if hi:
-          self.set_notice("votre post a été ajouté")
-        else:
-          self.set_notice("erreur quand vous avez envoyé le formulaire")
-        self.render_figure.set_param("post_id",hi["post_id"])
-        return self.render_some_json("welcome/mypost.json")
-    def createband(self,search):
-        myparam=self.get_post_data()(params=("name",))
-        hi=self.db.Band.create(myparam)
-        if hi:
-          self.set_notice("votre band a été ajouté")
-        else:
-          self.set_notice("erreur quand vous avez envoyé le formulaire")
-        return self.render_some_json("welcome/mypic.json")
-    def createmember(self,search):
-        myparam=self.get_post_data()(params=("band_id","name",))
-        hi=self.db.Member.create(myparam)
-        if hi:
-          self.set_notice("votre member a été ajouté")
-        else:
-          self.set_notice("erreur quand vous avez envoyé le formulaire")
-        return self.render_some_json("welcome/mypic.json")
     def new1(self,search):
         myparam=self.get_post_data()(params=("script","missiontarget_id","missiontype_id","missionprogram_id",))
         #hi=self.dbMissionscript.create(myparam)
@@ -236,18 +182,6 @@ class Route():
         print("route params")
         self.render_figure.set_param("user",User().getbyid(myparam["id"]))
         return self.render_figure.render_figure("user/edituser.html")
-    def editerpost(self,params={}):
-        getparams=("id",)
-        print("get param, action see my new",getparams)
-        myparam=self.get_this_route_param(getparams,params)
-        self.render_figure.set_param("post",self.db.Post.getbyid(myparam["id"]))
-        return self.render_figure.render_figure("ajouter/editerpost.html")
-    def voirpost(self,params={}):
-        getparams=("id",)
-        print("get param, action see my new",getparams)
-        myparam=self.get_this_route_param(getparams,params)
-        self.render_figure.set_param("post",self.db.Post.getbyid(myparam["id"]))
-        return self.render_figure.render_figure("ajouter/voirpost.html")
     def voirpersonne(self,params={}):
         getparams=("id",)
         print("get param, action see my new",getparams)
@@ -288,41 +222,6 @@ class Route():
             self.set_json("{\"redirect\":\"/youbank\"}")
             print("session login",self.Program.get_session())
         return self.render_figure.render_json()
-    def search(self,search): 
-        return self.render_figure.render_figure("ajouter/search.html")
-    def addpost(self,search): 
-        return self.render_figure.render_figure("ajouter/post.html")
-    def addmember(self,search): 
-        return self.render_figure.render_figure("ajouter/member.html")
-    def addband(self,search):
-
-        return self.render_figure.render_figure("ajouter/band.html")
-    def addmusician(self,search):
-
-        return self.render_figure.render_figure("ajouter/musician.html")
-    def ajouterenregistrement(self,search):
-        getparams=("id",)
-
-        print("get param, action see my new",getparams)
-        myparam=self.get_this_route_param(getparams,params)
-
-        try:
-          event1="hey"
-          self.render_figure.set_param("myid",myparam["id"])
-          self.render_figure.set_param("event",event1)
-        except:
-          print("i missed event")
-        return self.render_figure.render_figure("ajouter/enregistrement.html")
-    def ajouterlieu(self,search):
-        return self.render_figure.render_only_figure("ajouter/lieu.html")
-    def ajouterhack(self,search):
-        self.render_figure.set_param("personnes",[])
-        self.render_figure.set_param("lieux",[])
-        return self.render_figure.render_only_figure("ajouter/hack.html")
-    def ajouterrumeur(self,search):
-        self.render_figure.set_param("personnes",[])
-        self.render_figure.set_param("lieux",[])
-        return self.render_figure.render_only_figure("ajouter/rumeur.html")
     def nouveau(self,search):
         return self.render_figure.render_figure("welcome/new.html")
     def getlyrics(self,params={}):
@@ -347,10 +246,6 @@ class Route():
         return self.render_figure.render_figure("user/signup.html")
     def signin(self,search):
         return self.render_figure.render_figure("user/signin.html")
-    def addpen(self,search):
-        return self.render_figure.render_figure("ajouter/pen.html")
-    def addnotebook(self,search):
-        return self.render_figure.render_figure("ajouter/notebook.html")
 
     def save_user(self,params={}):
         myparam=self.get_post_data()(params=("country_id","phone","password","passwordconfirmation"))
@@ -414,21 +309,8 @@ class Route():
             path=path.split("?")[0]
             print("link route ",path)
             ROUTES={
-            '^/createmusician$': self.createmusician,
-            '^/createband$': self.createband,
-            '^/createpost$': self.createpost,
-            '^/createmember$': self.createmember,
             '^/myurl$': self.myurl,
             '^/mydiv$': self.mydiv,
-            '^/search$': self.search,
-            '^/voirsearch$': self.voirsearch,
-            '^/ajoutermusician$': self.addmusician,
-            '^/ajouterband$': self.addband,
-            '^/ajouterpost$': self.addpost,
-            '^/voirpost/([0-9]+)$': self.voirpost,
-            '^/editerpost/([0-9]+)$': self.editerpost,
-            '^/updatepost$': self.updatepost,
-            '^/ajoutermember$': self.addmember,
             '^/aboutme$': self.aboutme,
             '^/welcome$': self.welcome,
             '^/sign_in$': self.signin,

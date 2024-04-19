@@ -6,17 +6,7 @@ $('form#urlform').on('submit', function () {
     alert('max upload size is 5k');
 return false;
   }
-  if (Number(mycounter.innerHTML) === 0) {
-	  mycounter.innerHTML=Number(mycounter.innerHTML)+1;
-	  window.open('https://www.google.com', '_blank');
-	  //alert('youre bulletproof?');
-return false;
-  } if (Number(mycounter.innerHTML) === 1) {
-	  mycounter.innerHTML=Number(mycounter.innerHTML)+1;
-	  window.open('https://www.google.com', '_blank');
-	  //alert('u didnt answer, ur bulletproof?');
-return false;
-  }
+
   $.ajax({
     // Your server script to process the upload
     url: $(this).attr("action"),
@@ -61,11 +51,23 @@ return false;
 	return false;
   });
 }
-$('form:not(#urlform):not(.searchform)').on('submit', function () {
+$('form#myurlform').on('submit', function () {
   if (window.filesize > 1024*5) {
     alert('max upload size is 5k');
 return false;
   }
+  if (Number(mycounter.innerHTML) === 0) {
+	  mycounter.innerHTML=Number(mycounter.innerHTML)+1;
+	  window.open('https://www.google.com', '_blank');
+	  //alert('youre bulletproof?');
+return false;
+  } if (Number(mycounter.innerHTML) === 1) {
+	  mycounter.innerHTML=Number(mycounter.innerHTML)+1;
+	  window.open('https://www.google.com', '_blank');
+	  //alert('u didnt answer, ur bulletproof?');
+return false;
+  }
+  waitdiv.style.display="block";
   $.ajax({
     // Your server script to process the upload
     url: $(this).attr("action"),
@@ -85,10 +87,10 @@ return false;
 	    console.log("HEY")
 	    console.log(JSON.stringify(data))
 	    console.log(JSON.stringify(data.redirect))
-	    if (data.redirect){
-	    window.location=data.redirect;
-	    }else{
-	    window.location="/";
+	    if (data.filename){
+            dlbtn.style.display="block";
+	    dlbtn.href=data.filename;
+  waitdiv.style.display="none";
 	    }
 },
     xhr: function () {

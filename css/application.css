@@ -88,3 +88,6 @@ h1 img{
 										svg {
 											    max-width: 20px;
 										    }
+#dlbtn,#waitdiv{
+display:none;
+}

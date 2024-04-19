@@ -1,26 +1,5 @@
-function myurl(value){
-	inserershorturl.value=(new URL(value)).origin;
-	$.ajax({url:"/mydiv",type:"post",data:{"user_id":myuserid.innerHTML,"div1": inserershorturl.value},
-	success:function(data){
-		if (data.div1.length > 0){
-		insererurldiv1.value=data.div1;
-		insererurldiv1.parentElement.style.display="block";
-		}else{
-		insererurldiv1.value="";
-		insererurldiv1.parentElement.style.display="block";
-		}
-	}});
-}
 
 $(function(){
-if (window.location.pathname !== "/sign_in" && window.location.pathname !== "/sign_up" && window.location.pathname !== "/aboutme" && myuserid.innerHTML == "") {
-alert("pas connecté-e vous allez être redirigé(e)")
-window.location="/sign_in";
-
-}else if(window.location.pathname !== "/ajouterband" && Number(nbgroup.innerHTML) === 0){
-alert("ajouter des groupe de musique")
-window.location="/ajouterband";
-}
 if (document.getElementById("editmypost")){
 
 document.getElementById("members").onchange = function() {
